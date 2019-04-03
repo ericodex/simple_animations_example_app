@@ -80,7 +80,7 @@ class TypewriterBoxDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExamplePage(
-      title: "Hello Typewriter Box",
+      title: "Typewriter Box",
       pathToFile: "typewriter_box.dart",
       delayStartup: true,
       builder: (context) => Center(child: Box()),
