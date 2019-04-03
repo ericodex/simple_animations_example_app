@@ -20,7 +20,7 @@ class Circle extends StatelessWidget {
   Widget build(BuildContext context) {
     return ControlledAnimation(
       playback: Playback.MIRROR,
-      duration: Duration(seconds: 5),
+      duration: Duration(seconds: 10),
       tween: rainbowTween(),
       child: CircleText(),
       builderWithChild: (context, child, color) {
@@ -69,7 +69,7 @@ class RainbowCircleDemo extends StatelessWidget {
     return ExamplePage(
       title: "Rainbow Circle",
       pathToFile: "rainbow_circle.dart",
-      delayStartup: true,
+      delayStartup: false,
       builder: (context) => Center(child: Circle()),
     );
   }
