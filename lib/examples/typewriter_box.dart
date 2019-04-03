@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations_example_app/example_page.dart';
+import 'package:simple_animations_example_app/widgets/example_page.dart';
 import 'package:simple_animations/simple_animations.dart';
 
 class Box extends StatelessWidget {

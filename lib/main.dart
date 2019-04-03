@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations_example_app/homescreen.dart';
+import 'package:simple_animations_example_app/widgets/homescreen.dart';
 
 void main() => runApp(SimpleAnimationsExampleApp());
 

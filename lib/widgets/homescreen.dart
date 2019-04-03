@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations_example_app/examples/typewriter_box.dart';
+import 'package:simple_animations_example_app/examples_configuration.dart';
 
 class Homescreen extends StatelessWidget {
   @override
@@ -20,12 +20,10 @@ class Homescreen extends StatelessWidget {
                 height: 20,
               ),
               Text("Pick one demo:", style: Theme.of(context).textTheme.body1),
-              _LinkToExample(
-                label: "TypeWriter Box",
-                click: () =>
-                    _openExample(context, (context) => TypewriterBoxDemo()),
+              Container(
+                height: 5,
               )
-            ],
+            ]..addAll(generateDemosList(context)),
           ),
         )),
       ),
@@ -35,13 +33,21 @@ class Homescreen extends StatelessWidget {
   void _openExample(BuildContext context, WidgetBuilder builder) {
     Navigator.of(context).push(MaterialPageRoute(builder: builder));
   }
+
+  Iterable<Widget> generateDemosList(BuildContext context) {
+    var allExamples = getExamplesConfiguration().allExamples;
+    return allExamples.map((example) => LinkToExample(
+          label: example.name,
+          click: () => _openExample(context, example.builder),
+        ));
+  }
 }
 
-class _LinkToExample extends StatelessWidget {
+class LinkToExample extends StatelessWidget {
   final String label;
   final Function click;
 
-  const _LinkToExample({
+  const LinkToExample({
     this.label,
     this.click,
     Key key,
@@ -79,7 +85,7 @@ class _GreetingText extends StatelessWidget {
             style: Theme.of(context).textTheme.body2),
         TextSpan(
             text: ". Here you can discover all features of this "
-                "packages by exploring examples. Inspire yourself and"
+                "package by exploring examples. Inspire yourself and"
                 " create beautiful Flutter apps.")
       ]),
     );
