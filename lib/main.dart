@@ -7,6 +7,7 @@ class SimpleAnimationsExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Simple Animations Example App",
       home: Homescreen(),
       theme: _theme(),

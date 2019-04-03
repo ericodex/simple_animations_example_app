@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations_example_app/examples/hello_typewriter_box.dart';
+import 'package:simple_animations_example_app/examples/typewriter_box.dart';
 
 class Homescreen extends StatelessWidget {
   @override
@@ -21,9 +21,9 @@ class Homescreen extends StatelessWidget {
               ),
               Text("Pick one demo:", style: Theme.of(context).textTheme.body1),
               _LinkToExample(
-                label: "Hello TypeWriter Box",
+                label: "TypeWriter Box",
                 click: () =>
-                    _openExample(context, (context) => HelloTypewriterBox()),
+                    _openExample(context, (context) => TypewriterBoxDemo()),
               )
             ],
           ),
