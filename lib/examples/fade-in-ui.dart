@@ -2,36 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
-class FadeInUiNonAnimated extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget>[
-            HeaderPlaceholder(),
-            WhitespaceSeparator(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                CirclePlaceholder(),
-                CirclePlaceholder(),
-                CirclePlaceholder()
-              ],
-            ),
-            WhitespaceSeparator(),
-            CardPlaceholder(),
-            CardPlaceholder(),
-            CardPlaceholder(),
-            CardPlaceholder()
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class FadeInUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
