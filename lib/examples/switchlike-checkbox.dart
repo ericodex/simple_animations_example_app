@@ -16,6 +16,7 @@ class _ExampleFormState extends State<ExampleForm> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggle,
+      behavior: HitTestBehavior.translucent,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
