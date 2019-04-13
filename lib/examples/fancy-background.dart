@@ -10,39 +10,31 @@ class FancyBackgroundApp extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Positioned.fill(child: AnimatedBackground()),
+        onBottom(AnimatedWave(
+          height: 180,
+          speed: 1.0,
+        )),
+        onBottom(AnimatedWave(
+          height: 120,
+          speed: 0.9,
+          offset: pi,
+        )),
+        onBottom(AnimatedWave(
+          height: 220,
+          speed: 1.2,
+          offset: pi / 2,
+        )),
         Positioned.fill(child: CenteredText()),
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedWave(
-              height: 180,
-              speed: 1.0,
-            ),
-          ),
-        ),
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedWave(
-              height: 120,
-              speed: 0.9,
-              offset: pi,
-            ),
-          ),
-        ),
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedWave(
-              height: 220,
-              speed: 1.2,
-              offset: pi / 2,
-            ),
-          ),
-        )
       ],
     );
   }
+
+  onBottom(Widget child) => Positioned.fill(
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: child,
+        ),
+      );
 }
 
 class AnimatedWave extends StatelessWidget {
