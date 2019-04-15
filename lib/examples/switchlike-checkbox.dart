@@ -61,6 +61,7 @@ class SwitchlikeCheckbox extends StatelessWidget {
 
     return ControlledAnimation(
       playback: checked ? Playback.PLAY_FORWARD : Playback.PLAY_REVERSE,
+      startPosition: checked ? 1.0 : 0.0,
       duration: tween.duration * 1.2,
       tween: tween,
       curve: Curves.easeInOut,
