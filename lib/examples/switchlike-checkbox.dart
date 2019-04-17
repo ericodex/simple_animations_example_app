@@ -77,20 +77,19 @@ class SwitchlikeCheckbox extends StatelessWidget {
       padding: const EdgeInsets.all(3.0),
       child: Stack(
         children: [
-          Positioned(child: LayoutBuilder(builder: (context, constraints) {
-            return Padding(
-              padding: EdgeInsets.only(left: animation["paddingLeft"]),
-              child: Transform.rotate(
-                angle: animation["rotation"],
-                child: Container(
-                  decoration: _innerBoxDecoration(animation["color"]),
-                  width: 20,
-                  child:
-                      Center(child: Text(animation["text"], style: labelStyle)),
-                ),
+          Positioned(
+              child: Padding(
+            padding: EdgeInsets.only(left: animation["paddingLeft"]),
+            child: Transform.rotate(
+              angle: animation["rotation"],
+              child: Container(
+                decoration: _innerBoxDecoration(animation["color"]),
+                width: 20,
+                child:
+                    Center(child: Text(animation["text"], style: labelStyle)),
               ),
-            );
-          }))
+            ),
+          ))
         ],
       ),
     );
