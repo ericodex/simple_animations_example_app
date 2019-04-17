@@ -10,7 +10,7 @@ class ExampleForm extends StatefulWidget {
 }
 
 class _ExampleFormState extends State<ExampleForm> {
-  bool showAdvancedFeatures = false;
+  bool enableCoolStuff = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class _ExampleFormState extends State<ExampleForm> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SwitchlikeCheckbox(checked: showAdvancedFeatures),
+          SwitchlikeCheckbox(checked: enableCoolStuff),
           Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: Text(
@@ -35,7 +35,7 @@ class _ExampleFormState extends State<ExampleForm> {
 
   void _toggle() {
     setState(() {
-      showAdvancedFeatures = !showAdvancedFeatures;
+      enableCoolStuff = !enableCoolStuff;
     });
   }
 }
