@@ -102,9 +102,12 @@ class _LoadStuffButtonState extends State<LoadStuffButton> {
   ];
 
   static final AniWidgetBuilder loadButtonLabel = (context, ani) => Center(
-        child: Text(
-          "Load Stuff",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+        child: Opacity(
+          opacity: ani["opacity"],
+          child: Text(
+            "Load Stuff",
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
         ),
       );
 
@@ -115,9 +118,12 @@ class _LoadStuffButtonState extends State<LoadStuffButton> {
           tween: Tween(begin: 0.0, end: pi * 2),
           builder: (context, rotation) => Transform.rotate(
                 angle: rotation,
-                child: Icon(
-                  Icons.sync,
-                  color: Colors.green,
+                child: Opacity(
+                  opacity: ani["opacity"],
+                  child: Icon(
+                    Icons.sync,
+                    color: Colors.green,
+                  ),
                 ),
               ),
         ),
