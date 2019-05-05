@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:simple_animations_example_app/examples/fade-in-ui.dart';
 import 'package:simple_animations_example_app/examples/fancy-background.dart';
+import 'package:simple_animations_example_app/examples/particle-background.dart';
 import 'package:simple_animations_example_app/examples/rainbow_circle.dart';
 import 'package:simple_animations_example_app/examples/switchlike-checkbox.dart';
 import 'package:simple_animations_example_app/examples/typewriter_box.dart';
@@ -22,6 +23,9 @@ ExamplesConfiguration getExamplesConfiguration() {
       name: "Fancy Background", builder: (context) => FancyBackgroundDemo()));
   configuration.add(ExampleItem(
       name: "Load Stuff Button", builder: (context) => LoadStuffButtonDemo()));
+  configuration.add(ExampleItem(
+      name: "Particle Background",
+      builder: (context) => ParticleBackgroundDemo()));
 
   return configuration;
 }

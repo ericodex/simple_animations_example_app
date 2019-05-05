@@ -37,33 +37,6 @@ class _ExamplePageState extends State<ExamplePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(child: _buildPage(context)),
-            Container(
-              height: 0.5,
-              color: Colors.black26,
-            ),
-            _linkToSourceCode(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _linkToSourceCode() {
-    return Container(
-      alignment: Alignment.topCenter,
-      color: Color.fromARGB(255, 220, 220, 220),
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(20, 2, 5, 2),
-        child: Row(
-          children: <Widget>[
-            Expanded(
-                child:
-                    Text("The source code of this demo is available online.")),
-            IconButton(
-              icon: Icon(Icons.open_in_new),
-              onPressed: _openSource,
-              splashColor: Colors.transparent,
-            )
           ],
         ),
       ),
@@ -73,20 +46,40 @@ class _ExamplePageState extends State<ExamplePage> {
   AppBar _appbar() {
     return AppBar(
       title: Text(widget.title),
-      actions: <Widget>[
-        IconButton(
-          onPressed: () => setState(() {
-                renderBuilder = false;
-                Future.delayed(Duration(milliseconds: 200)).then((_) {
-                  setState(() => renderBuilder = true);
-                });
-              }),
-          icon: Icon(
-            Icons.refresh,
-            color: Colors.white,
-          ),
-        )
-      ],
+      actions: <Widget>[_reloadExampleButton(), _moreMenu()],
+    );
+  }
+
+  PopupMenuButton _moreMenu() {
+    return PopupMenuButton<_MoreMenuResult>(
+      onSelected: (itemClicked) {
+        if (itemClicked == _MoreMenuResult.SHOW_SOURCE_CODE) {
+          _openSource();
+        }
+      },
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+            value: _MoreMenuResult.SHOW_SOURCE_CODE,
+            child: Text("View source code"),
+          )
+        ];
+      },
+    );
+  }
+
+  IconButton _reloadExampleButton() {
+    return IconButton(
+      onPressed: () => setState(() {
+            renderBuilder = false;
+            Future.delayed(Duration(milliseconds: 200)).then((_) {
+              setState(() => renderBuilder = true);
+            });
+          }),
+      icon: Icon(
+        Icons.refresh,
+        color: Colors.white,
+      ),
     );
   }
 
@@ -105,3 +98,5 @@ class _ExamplePageState extends State<ExamplePage> {
     }
   }
 }
+
+enum _MoreMenuResult { SHOW_SOURCE_CODE }
