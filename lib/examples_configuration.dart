@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:simple_animations_example_app/examples/fade-in-ui.dart';
 import 'package:simple_animations_example_app/examples/fancy-background.dart';
+import 'package:simple_animations_example_app/examples/hit_a_mole.dart';
 import 'package:simple_animations_example_app/examples/particle-background.dart';
 import 'package:simple_animations_example_app/examples/rainbow_circle.dart';
 import 'package:simple_animations_example_app/examples/switchlike-checkbox.dart';
@@ -26,6 +27,8 @@ ExamplesConfiguration getExamplesConfiguration() {
   configuration.add(ExampleItem(
       name: "Particle Background",
       builder: (context) => ParticleBackgroundDemo()));
+  configuration.add(
+      ExampleItem(name: "Hit a mole", builder: (context) => HitAMoleDemo()));
 
   return configuration;
 }
