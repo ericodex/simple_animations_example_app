@@ -14,7 +14,7 @@ description: Flutter app demonstrating simple_animations in action.
 version: 1.0.2+3
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
