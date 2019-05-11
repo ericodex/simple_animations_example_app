@@ -8,9 +8,13 @@ import 'package:simple_animations_example_app/examples/switchlike_checkbox.dart'
 import 'package:simple_animations_example_app/examples/typewriter_box.dart';
 import 'package:simple_animations_example_app/examples/load_stuff_button.dart';
 
+import 'examples/experimental.dart';
+
 ExamplesConfiguration getExamplesConfiguration() {
   final configuration = ExamplesConfiguration();
 
+  configuration.add(ExampleItem(
+      name: "Experimental", builder: (context) => ExperimentalDemo()));
   configuration.add(ExampleItem(
       name: "Typewriter Box", builder: (context) => TypewriterBoxDemo()));
   configuration.add(ExampleItem(
