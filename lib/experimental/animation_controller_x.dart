@@ -84,12 +84,14 @@ class LoopAnimationPlan extends AnimationPlan {
   Duration iterationDuration;
   int iterations;
   bool startWithCurrentPosition;
+  bool mirrorIterations;
   LoopAnimationPlan(
       {@required this.iterationDuration,
       this.from,
       this.to,
       this.iterations,
-      this.startWithCurrentPosition = true});
+      this.startWithCurrentPosition = true,
+      this.mirrorIterations = false});
 
   FromToAnimationPlan _currentIterationPlan;
   var _iterationsPassed = 0;
@@ -97,28 +99,45 @@ class LoopAnimationPlan extends AnimationPlan {
   @override
   computeValue(Duration time) {
     if (_currentIterationPlan == null) {
-      var fromValue = from;
-      final toValue = to;
-      if (startWithCurrentPosition && _iterationsPassed == 0) {
-        fromValue = startedValue;
-      }
-      _currentIterationPlan =
-          FromToAnimationPlan(iterationDuration, from: fromValue, to: toValue);
-      _currentIterationPlan.started(time, startedValue);
+      _createIterationPlanForCurrentIteration(time);
     }
+
     final value = _currentIterationPlan.computeValue(time);
 
     if (_currentIterationPlan.isCompleted()) {
-      _currentIterationPlan.dispose();
-      _currentIterationPlan = null;
-      _iterationsPassed++;
-
-      if (iterations != null && _iterationsPassed == iterations) {
-        planCompleted();
-      }
+      finishIteration();
     }
 
     return value;
+  }
+
+  void _createIterationPlanForCurrentIteration(Duration time) {
+    var fromValue = from;
+    var toValue = to;
+
+    if (startWithCurrentPosition && _iterationsPassed == 0) {
+      fromValue = startedValue;
+    }
+
+    if (mirrorIterations && _iterationsPassed % 2 == 1) {
+      final swapValue = toValue;
+      toValue = fromValue;
+      fromValue = swapValue;
+    }
+
+    _currentIterationPlan =
+        FromToAnimationPlan(iterationDuration, from: fromValue, to: toValue);
+    _currentIterationPlan.started(time, startedValue);
+  }
+
+  void finishIteration() {
+    _currentIterationPlan.dispose();
+    _currentIterationPlan = null;
+    _iterationsPassed++;
+
+    if (iterations != null && _iterationsPassed == iterations) {
+      planCompleted();
+    }
   }
 }
 

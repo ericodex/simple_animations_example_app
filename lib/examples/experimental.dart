@@ -87,6 +87,22 @@ class _ExperimentState extends State<Experiment>
               child: Text("Loop Fw (5x)"),
             ),
           ],
+        ),
+        Row(
+          children: <Widget>[
+            MaterialButton(
+              onPressed: _mirrorFw,
+              child: Text("Mirror Fw"),
+            ),
+            MaterialButton(
+              onPressed: _mirrorRv,
+              child: Text("Mirror Rev"),
+            ),
+            MaterialButton(
+              onPressed: _mirrorFw5x,
+              child: Text("Mirror Fw (5x)"),
+            ),
+          ],
         )
       ],
     );
@@ -144,7 +160,7 @@ class _ExperimentState extends State<Experiment>
       LoopAnimationPlan(
           from: 0.0,
           to: 1.0,
-          startWithCurrentPosition: true,
+          startWithCurrentPosition: false,
           iterationDuration: Duration(seconds: 1))
     ]);
   }
@@ -152,10 +168,7 @@ class _ExperimentState extends State<Experiment>
   void _loopRv() {
     _controller.reset([
       LoopAnimationPlan(
-          from: 1.0,
-          to: 0.0,
-          startWithCurrentPosition: true,
-          iterationDuration: Duration(seconds: 1))
+          from: 1.0, to: 0.0, iterationDuration: Duration(seconds: 1))
     ]);
   }
 
@@ -164,6 +177,39 @@ class _ExperimentState extends State<Experiment>
       LoopAnimationPlan(
           from: 0.0,
           to: 1.0,
+          iterations: 5,
+          iterationDuration: Duration(seconds: 1))
+    ]);
+  }
+
+  void _mirrorFw() {
+    _controller.reset([
+      LoopAnimationPlan(
+          from: 0.0,
+          to: 1.0,
+          mirrorIterations: true,
+          startWithCurrentPosition: true,
+          iterationDuration: Duration(seconds: 1))
+    ]);
+  }
+
+  void _mirrorRv() {
+    _controller.reset([
+      LoopAnimationPlan(
+          from: 1.0,
+          to: 0.0,
+          mirrorIterations: true,
+          startWithCurrentPosition: true,
+          iterationDuration: Duration(seconds: 1))
+    ]);
+  }
+
+  void _mirrorFw5x() {
+    _controller.reset([
+      LoopAnimationPlan(
+          from: 0.0,
+          to: 1.0,
+          mirrorIterations: true,
           iterations: 5,
           startWithCurrentPosition: true,
           iterationDuration: Duration(seconds: 1))
