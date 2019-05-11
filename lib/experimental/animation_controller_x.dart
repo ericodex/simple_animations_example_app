@@ -11,8 +11,8 @@ class AnimationControllerX extends Animation<double>
         AnimationLocalStatusListenersMixin {
   Ticker _ticker;
 
-  AnimationPlan _activePlan;
-  List<AnimationPlan> _plans = [];
+  AnimationTask _currentTask;
+  List<AnimationTask> _tasks = [];
 
   AnimationControllerX({@required TickerProvider vsync})
       : assert(vsync != null, "TODO provide description") {
@@ -21,17 +21,16 @@ class AnimationControllerX extends Animation<double>
   }
 
   void _tick(Duration time) {
-    if (_plans.isEmpty && _activePlan == null) {
+    if (_tasks.isEmpty && _currentTask == null) {
       return;
     }
 
-    if (_activePlan == null) {
-      print("start new plan");
-      _activePlan = _plans.removeAt(0);
-      _activePlan.started(time, _value);
+    if (_currentTask == null) {
+      _currentTask = _tasks.removeAt(0);
+      _currentTask.started(time, _value);
     }
 
-    final newValue = _activePlan.computeValue(time);
+    final newValue = _currentTask.computeValue(time);
     assert(newValue != null,
         "Value passed from 'computeValue' method must be non null.");
     if (newValue != _value) {
@@ -39,10 +38,9 @@ class AnimationControllerX extends Animation<double>
       notifyListeners();
     }
 
-    if (_activePlan.isCompleted()) {
-      print("completed plan");
-      _activePlan.dispose();
-      _activePlan = null;
+    if (_currentTask.isCompleted()) {
+      _currentTask.dispose();
+      _currentTask = null;
     }
   }
 
@@ -59,33 +57,31 @@ class AnimationControllerX extends Animation<double>
   double get value => _value;
   double _value = 0.0;
 
-  void addPlan(FromToAnimationPlan plan) {
-    print("plan added");
-    _plans.add(plan);
+  void addTask(FromToAnimationTask task) {
+    _tasks.add(task);
   }
 
-  void reset([List<AnimationPlan> plansAfterReset]) {
-    print("stop all plans");
-    _plans.clear();
-    if (_activePlan != null) {
-      _activePlan.dispose();
-      _activePlan = null;
+  void reset([List<AnimationTask> tasksToExecuteAfterReset]) {
+    _tasks.clear();
+    if (_currentTask != null) {
+      _currentTask.dispose();
+      _currentTask = null;
     }
 
-    if (plansAfterReset != null) {
-      _plans.addAll(plansAfterReset);
+    if (tasksToExecuteAfterReset != null) {
+      _tasks.addAll(tasksToExecuteAfterReset);
     }
   }
 }
 
-class LoopAnimationPlan extends AnimationPlan {
+class LoopAnimationTask extends AnimationTask {
   double from;
   double to;
   Duration iterationDuration;
   int iterations;
   bool startWithCurrentPosition;
   bool mirrorIterations;
-  LoopAnimationPlan(
+  LoopAnimationTask(
       {@required this.iterationDuration,
       this.from,
       this.to,
@@ -93,25 +89,25 @@ class LoopAnimationPlan extends AnimationPlan {
       this.startWithCurrentPosition = true,
       this.mirrorIterations = false});
 
-  FromToAnimationPlan _currentIterationPlan;
+  FromToAnimationTask _currentIterationTask;
   var _iterationsPassed = 0;
 
   @override
   computeValue(Duration time) {
-    if (_currentIterationPlan == null) {
-      _createIterationPlanForCurrentIteration(time);
+    if (_currentIterationTask == null) {
+      _createAnimationTaskForCurrentIteration(time);
     }
 
-    final value = _currentIterationPlan.computeValue(time);
+    final value = _currentIterationTask.computeValue(time);
 
-    if (_currentIterationPlan.isCompleted()) {
+    if (_currentIterationTask.isCompleted()) {
       finishIteration();
     }
 
     return value;
   }
 
-  void _createIterationPlanForCurrentIteration(Duration time) {
+  void _createAnimationTaskForCurrentIteration(Duration time) {
     var fromValue = from;
     var toValue = to;
 
@@ -125,53 +121,53 @@ class LoopAnimationPlan extends AnimationPlan {
       fromValue = swapValue;
     }
 
-    _currentIterationPlan =
-        FromToAnimationPlan(iterationDuration, from: fromValue, to: toValue);
-    _currentIterationPlan.started(time, startedValue);
+    _currentIterationTask =
+        FromToAnimationTask(iterationDuration, from: fromValue, to: toValue);
+    _currentIterationTask.started(time, startedValue);
   }
 
   void finishIteration() {
-    _currentIterationPlan.dispose();
-    _currentIterationPlan = null;
+    _currentIterationTask.dispose();
+    _currentIterationTask = null;
     _iterationsPassed++;
 
     if (iterations != null && _iterationsPassed == iterations) {
-      planCompleted();
+      taskCompleted();
     }
   }
 }
 
-class SetValueAnimationPlan extends AnimationPlan {
+class SetValueAnimationTask extends AnimationTask {
   final double value;
-  SetValueAnimationPlan(this.value);
+  SetValueAnimationTask(this.value);
 
   @override
   computeValue(Duration time) {
-    planCompleted();
+    taskCompleted();
     return value;
   }
 }
 
-class SleepAnimationPlan extends AnimationPlan {
+class SleepAnimationTask extends AnimationTask {
   Duration sleepDuration;
-  SleepAnimationPlan(this.sleepDuration);
+  SleepAnimationTask(this.sleepDuration);
 
   @override
   computeValue(Duration time) {
     final timePassed = time - startedTime;
     if (timePassed.inMilliseconds >= sleepDuration.inMilliseconds) {
-      planCompleted();
+      taskCompleted();
     }
     return startedValue;
   }
 }
 
-class FromToAnimationPlan extends AnimationPlan {
+class FromToAnimationTask extends AnimationTask {
   Duration duration;
   bool recomputeDurationBasedOnProgress;
   double from;
   double to;
-  FromToAnimationPlan(this.duration,
+  FromToAnimationTask(this.duration,
       {@required this.to,
       this.recomputeDurationBasedOnProgress = true,
       this.from})
@@ -200,13 +196,13 @@ class FromToAnimationPlan extends AnimationPlan {
           .clamp(min(fromValue, toValue), max(fromValue, toValue));
     }
 
-    if (value == toValue) planCompleted();
+    if (value == toValue) taskCompleted();
 
     return value;
   }
 }
 
-abstract class AnimationPlan {
+abstract class AnimationTask {
   Duration startedTime;
   double startedValue;
   bool _isCompleted = false;
@@ -218,7 +214,7 @@ abstract class AnimationPlan {
 
   computeValue(Duration time);
 
-  void planCompleted() {
+  void taskCompleted() {
     _isCompleted = true;
   }
 

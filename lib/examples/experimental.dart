@@ -131,33 +131,33 @@ class _ExperimentState extends State<Experiment>
   void _restart() {
     _controller.reset();
     _controller
-        .addPlan(FromToAnimationPlan(Duration(seconds: 2), from: 0.0, to: 1.0));
+        .addTask(FromToAnimationTask(Duration(seconds: 2), from: 0.0, to: 1.0));
   }
 
   void _continue(bool compensateTime) {
     _controller.reset();
-    _controller.addPlan(FromToAnimationPlan(Duration(seconds: 2),
+    _controller.addTask(FromToAnimationTask(Duration(seconds: 2),
         to: 1.0, recomputeDurationBasedOnProgress: compensateTime));
   }
 
   void _backwards() {
-    _controller.reset([FromToAnimationPlan(Duration(seconds: 2), to: 0.0)]);
+    _controller.reset([FromToAnimationTask(Duration(seconds: 2), to: 0.0)]);
   }
 
   void _combo1() {
     _controller.reset([
-      SetValueAnimationPlan(0.5),
-      SleepAnimationPlan(Duration(milliseconds: 500)),
-      FromToAnimationPlan(Duration(milliseconds: 1500), to: 1.0),
-      FromToAnimationPlan(Duration(milliseconds: 1500), to: 0.5),
-      SleepAnimationPlan(Duration(milliseconds: 500)),
-      SetValueAnimationPlan(0.0),
+      SetValueAnimationTask(0.5),
+      SleepAnimationTask(Duration(milliseconds: 500)),
+      FromToAnimationTask(Duration(milliseconds: 1500), to: 1.0),
+      FromToAnimationTask(Duration(milliseconds: 1500), to: 0.5),
+      SleepAnimationTask(Duration(milliseconds: 500)),
+      SetValueAnimationTask(0.0),
     ]);
   }
 
   void _loopFw() {
     _controller.reset([
-      LoopAnimationPlan(
+      LoopAnimationTask(
           from: 0.0,
           to: 1.0,
           startWithCurrentPosition: false,
@@ -167,14 +167,14 @@ class _ExperimentState extends State<Experiment>
 
   void _loopRv() {
     _controller.reset([
-      LoopAnimationPlan(
+      LoopAnimationTask(
           from: 1.0, to: 0.0, iterationDuration: Duration(seconds: 1))
     ]);
   }
 
   void _loopFw5x() {
     _controller.reset([
-      LoopAnimationPlan(
+      LoopAnimationTask(
           from: 0.0,
           to: 1.0,
           iterations: 5,
@@ -184,7 +184,7 @@ class _ExperimentState extends State<Experiment>
 
   void _mirrorFw() {
     _controller.reset([
-      LoopAnimationPlan(
+      LoopAnimationTask(
           from: 0.0,
           to: 1.0,
           mirrorIterations: true,
@@ -195,7 +195,7 @@ class _ExperimentState extends State<Experiment>
 
   void _mirrorRv() {
     _controller.reset([
-      LoopAnimationPlan(
+      LoopAnimationTask(
           from: 1.0,
           to: 0.0,
           mirrorIterations: true,
@@ -206,7 +206,7 @@ class _ExperimentState extends State<Experiment>
 
   void _mirrorFw5x() {
     _controller.reset([
-      LoopAnimationPlan(
+      LoopAnimationTask(
           from: 0.0,
           to: 1.0,
           mirrorIterations: true,
