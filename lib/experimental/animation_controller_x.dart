@@ -4,6 +4,12 @@ import 'package:meta/meta.dart';
 
 import 'animation_task.dart';
 
+// TODO try mixin easy adding to StatefulWidget
+
+// TODO provide legacy interface to be AnimationController compatible
+
+// TODO added generic status listener
+
 class AnimationControllerX extends Animation<double>
     with
         AnimationEagerListenerMixin,
@@ -52,7 +58,7 @@ class AnimationControllerX extends Animation<double>
 
   @override
   AnimationStatus get status => _status;
-  AnimationStatus _status = AnimationStatus.forward;
+  AnimationStatus _status = AnimationStatus.forward; // TODO manage status
 
   @override
   double get value => _value;
