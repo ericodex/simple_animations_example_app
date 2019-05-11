@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/animation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:meta/meta.dart';
@@ -166,6 +168,8 @@ class FromToAnimationPlan extends AnimationPlan {
         ? delta * duration.inMilliseconds
         : duration.inMilliseconds;
 
+    print("compute $fromValue => $toValue");
+
     double value;
 
     if (durationMillis == 0) {
@@ -173,7 +177,8 @@ class FromToAnimationPlan extends AnimationPlan {
     } else {
       final timePassed = time - startedTime;
       final progress = timePassed.inMilliseconds / durationMillis;
-      value = (fromValue * (1 - progress) + progress * toValue).clamp(0.0, 1.0);
+      value = (fromValue * (1 - progress) + progress * toValue)
+          .clamp(min(fromValue, toValue), max(fromValue, toValue));
     }
 
     if (value == toValue) planCompleted();

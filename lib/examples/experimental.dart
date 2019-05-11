@@ -75,8 +75,16 @@ class _ExperimentState extends State<Experiment>
         Row(
           children: <Widget>[
             MaterialButton(
-              onPressed: _loop1,
-              child: Text("Loop 1"),
+              onPressed: _loopFw,
+              child: Text("Loop Fw"),
+            ),
+            MaterialButton(
+              onPressed: _loopRv,
+              child: Text("Loop Rev"),
+            ),
+            MaterialButton(
+              onPressed: _loopFw5x,
+              child: Text("Loop Fw (5x)"),
             ),
           ],
         )
@@ -86,9 +94,17 @@ class _ExperimentState extends State<Experiment>
 
   Container _animatedContainer() {
     return Container(
-      color: Colors.red,
+      color: Colors.grey.shade300,
+      width: 200,
       height: 200,
-      width: width.value * 200,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          color: Colors.red,
+          height: 200,
+          width: width.value * 200,
+        ),
+      ),
     );
   }
 
@@ -117,14 +133,33 @@ class _ExperimentState extends State<Experiment>
       SetValueAnimationPlan(0.5),
       SleepAnimationPlan(Duration(milliseconds: 500)),
       FromToAnimationPlan(Duration(milliseconds: 1500), to: 1.0),
-      // TODO buggy
       FromToAnimationPlan(Duration(milliseconds: 1500), to: 0.5),
       SleepAnimationPlan(Duration(milliseconds: 500)),
       SetValueAnimationPlan(0.0),
     ]);
   }
 
-  void _loop1() {
+  void _loopFw() {
+    _controller.reset([
+      LoopAnimationPlan(
+          from: 0.0,
+          to: 1.0,
+          startWithCurrentPosition: true,
+          iterationDuration: Duration(seconds: 1))
+    ]);
+  }
+
+  void _loopRv() {
+    _controller.reset([
+      LoopAnimationPlan(
+          from: 1.0,
+          to: 0.0,
+          startWithCurrentPosition: true,
+          iterationDuration: Duration(seconds: 1))
+    ]);
+  }
+
+  void _loopFw5x() {
     _controller.reset([
       LoopAnimationPlan(
           from: 0.0,
