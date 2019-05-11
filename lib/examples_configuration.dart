@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:simple_animations_example_app/examples/fade-in-ui.dart';
-import 'package:simple_animations_example_app/examples/fancy-background.dart';
+import 'package:simple_animations_example_app/examples/fade_in_ui.dart';
+import 'package:simple_animations_example_app/examples/fancy_background.dart';
 import 'package:simple_animations_example_app/examples/hit_a_mole.dart';
-import 'package:simple_animations_example_app/examples/particle-background.dart';
+import 'package:simple_animations_example_app/examples/particle_background.dart';
 import 'package:simple_animations_example_app/examples/rainbow_circle.dart';
-import 'package:simple_animations_example_app/examples/switchlike-checkbox.dart';
+import 'package:simple_animations_example_app/examples/switchlike_checkbox.dart';
 import 'package:simple_animations_example_app/examples/typewriter_box.dart';
 import 'package:simple_animations_example_app/examples/load_stuff_button.dart';
 

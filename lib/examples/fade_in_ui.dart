@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
-// TODO fix file name
 class FadeInUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -172,7 +171,7 @@ class FadeInUiDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExamplePage(
       title: "Fade-in UI",
-      pathToFile: "fade-in-ui.dart",
+      pathToFile: "fade_in_ui.dart",
       delayStartup: false,
       builder: (context) => FadeInUi(),
     );

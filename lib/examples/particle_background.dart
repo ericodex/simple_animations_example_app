@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
-// TODO fix file name
 class ParticleBackgroundApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -161,7 +160,7 @@ class ParticleBackgroundDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExamplePage(
       title: "Particle Background",
-      pathToFile: "particle-background.dart",
+      pathToFile: "particle_background.dart",
       delayStartup: false,
       builder: (context) => ParticleBackgroundApp(),
     );

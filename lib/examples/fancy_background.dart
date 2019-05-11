@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
-// TODO fix file name
 class FancyBackgroundApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -146,7 +145,7 @@ class FancyBackgroundDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExamplePage(
       title: "Fancy Background",
-      pathToFile: "fancy-background.dart",
+      pathToFile: "fancy_background.dart",
       delayStartup: false,
       builder: (context) => FancyBackgroundApp(),
     );

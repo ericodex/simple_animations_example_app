@@ -8,7 +8,9 @@ class ExamplePage extends StatefulWidget {
   final bool delayStartup;
 
   ExamplePage(
-      {this.title, this.pathToFile, this.builder, this.delayStartup = false});
+      {this.title, this.pathToFile, this.builder, this.delayStartup = false})
+      : assert(!pathToFile.contains("-"),
+            "Don't use minus character in filenames.");
 
   @override
   _ExamplePageState createState() => _ExamplePageState();

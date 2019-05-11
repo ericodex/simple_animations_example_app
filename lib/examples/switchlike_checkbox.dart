@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
-// TODO fix file name
 class ExampleForm extends StatefulWidget {
   @override
   _ExampleFormState createState() => _ExampleFormState();
@@ -119,7 +118,7 @@ class SwitchlikeCheckboxDemo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ExamplePage(
       title: "Switch-like Checkbox",
-      pathToFile: "switchlike-checkbox.dart",
+      pathToFile: "switchlike_checkbox.dart",
       delayStartup: false,
       builder: (context) => Center(child: ExampleForm()),
     );
