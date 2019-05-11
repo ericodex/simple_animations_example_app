@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations_example_app/widgets/homescreen.dart';
 
 import 'examples/experimental.dart';
 

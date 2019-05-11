@@ -1,8 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/animation.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:meta/meta.dart';
+
+import 'animation_task.dart';
 
 class AnimationControllerX extends Animation<double>
     with
@@ -15,7 +15,8 @@ class AnimationControllerX extends Animation<double>
   List<AnimationTask> _tasks = [];
 
   AnimationControllerX({@required TickerProvider vsync})
-      : assert(vsync != null, "TODO provide description") {
+      : assert(vsync != null,
+            "Please specify a TickerProvider. You can use the SingleTickerProviderStateMixin to get one.") {
     _ticker = vsync.createTicker(_tick);
     _ticker.start();
   }
@@ -57,8 +58,12 @@ class AnimationControllerX extends Animation<double>
   double get value => _value;
   double _value = 0.0;
 
-  void addTask(FromToAnimationTask task) {
+  void addTask(AnimationTask task) {
     _tasks.add(task);
+  }
+
+  void addTasks(List<AnimationTask> tasks) {
+    tasks.forEach((task) => addTask(task));
   }
 
   void reset([List<AnimationTask> tasksToExecuteAfterReset]) {
@@ -72,153 +77,4 @@ class AnimationControllerX extends Animation<double>
       _tasks.addAll(tasksToExecuteAfterReset);
     }
   }
-}
-
-class LoopAnimationTask extends AnimationTask {
-  double from;
-  double to;
-  Duration iterationDuration;
-  int iterations;
-  bool startWithCurrentPosition;
-  bool mirrorIterations;
-  LoopAnimationTask(
-      {@required this.iterationDuration,
-      this.from,
-      this.to,
-      this.iterations,
-      this.startWithCurrentPosition = true,
-      this.mirrorIterations = false});
-
-  FromToAnimationTask _currentIterationTask;
-  var _iterationsPassed = 0;
-
-  @override
-  computeValue(Duration time) {
-    if (_currentIterationTask == null) {
-      _createAnimationTaskForCurrentIteration(time);
-    }
-
-    final value = _currentIterationTask.computeValue(time);
-
-    if (_currentIterationTask.isCompleted()) {
-      finishIteration();
-    }
-
-    return value;
-  }
-
-  void _createAnimationTaskForCurrentIteration(Duration time) {
-    var fromValue = from;
-    var toValue = to;
-
-    if (startWithCurrentPosition && _iterationsPassed == 0) {
-      fromValue = startedValue;
-    }
-
-    if (mirrorIterations && _iterationsPassed % 2 == 1) {
-      final swapValue = toValue;
-      toValue = fromValue;
-      fromValue = swapValue;
-    }
-
-    _currentIterationTask =
-        FromToAnimationTask(iterationDuration, from: fromValue, to: toValue);
-    _currentIterationTask.started(time, startedValue);
-  }
-
-  void finishIteration() {
-    _currentIterationTask.dispose();
-    _currentIterationTask = null;
-    _iterationsPassed++;
-
-    if (iterations != null && _iterationsPassed == iterations) {
-      taskCompleted();
-    }
-  }
-}
-
-class SetValueAnimationTask extends AnimationTask {
-  final double value;
-  SetValueAnimationTask(this.value);
-
-  @override
-  computeValue(Duration time) {
-    taskCompleted();
-    return value;
-  }
-}
-
-class SleepAnimationTask extends AnimationTask {
-  Duration sleepDuration;
-  SleepAnimationTask(this.sleepDuration);
-
-  @override
-  computeValue(Duration time) {
-    final timePassed = time - startedTime;
-    if (timePassed.inMilliseconds >= sleepDuration.inMilliseconds) {
-      taskCompleted();
-    }
-    return startedValue;
-  }
-}
-
-class FromToAnimationTask extends AnimationTask {
-  Duration duration;
-  bool recomputeDurationBasedOnProgress;
-  double from;
-  double to;
-  FromToAnimationTask(this.duration,
-      {@required this.to,
-      this.recomputeDurationBasedOnProgress = true,
-      this.from})
-      : assert(to != null,
-            "Missing paramter 'to'. You need to specify a value to animate to.");
-
-  @override
-  computeValue(Duration time) {
-    final fromValue = (from == null ? startedValue : from).clamp(0.0, 1.0);
-    final toValue = to.clamp(0.0, 1.0);
-    final delta = (toValue - fromValue).abs();
-    final durationMillis = recomputeDurationBasedOnProgress
-        ? delta * duration.inMilliseconds
-        : duration.inMilliseconds;
-
-    print("compute $fromValue => $toValue");
-
-    double value;
-
-    if (durationMillis == 0) {
-      value = toValue;
-    } else {
-      final timePassed = time - startedTime;
-      final progress = timePassed.inMilliseconds / durationMillis;
-      value = (fromValue * (1 - progress) + progress * toValue)
-          .clamp(min(fromValue, toValue), max(fromValue, toValue));
-    }
-
-    if (value == toValue) taskCompleted();
-
-    return value;
-  }
-}
-
-abstract class AnimationTask {
-  Duration startedTime;
-  double startedValue;
-  bool _isCompleted = false;
-
-  started(Duration time, double value) {
-    startedTime = time;
-    startedValue = value;
-  }
-
-  computeValue(Duration time);
-
-  void taskCompleted() {
-    _isCompleted = true;
-  }
-
-  bool isCompleted() => _isCompleted;
-
-  void dispose() {}
 }

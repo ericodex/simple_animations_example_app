@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations_example_app/experimental/animation_controller_x.dart';
+import 'package:simple_animations_example_app/experimental/animation_tasks.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
 class Experiment extends StatefulWidget {
@@ -32,7 +33,7 @@ class _ExperimentState extends State<Experiment>
 
   @override
   Widget build(BuildContext context) {
-    print("build ${width.value}");
+    //print("build ${width.value}");
     return Column(
       children: <Widget>[
         _animatedContainer(),
@@ -137,11 +138,19 @@ class _ExperimentState extends State<Experiment>
   void _continue(bool compensateTime) {
     _controller.reset();
     _controller.addTask(FromToAnimationTask(Duration(seconds: 2),
-        to: 1.0, recomputeDurationBasedOnProgress: compensateTime));
+        to: 1.0,
+        recomputeDurationBasedOnProgress: compensateTime,
+        onStart: () => print("start forward"),
+        onComplete: () => print("fin forward")));
   }
 
   void _backwards() {
-    _controller.reset([FromToAnimationTask(Duration(seconds: 2), to: 0.0)]);
+    _controller.reset([
+      FromToAnimationTask(Duration(seconds: 2),
+          to: 0.0,
+          onStart: () => print("start backward"),
+          onComplete: () => print("fin backward"))
+    ]);
   }
 
   void _combo1() {
@@ -178,7 +187,10 @@ class _ExperimentState extends State<Experiment>
           from: 0.0,
           to: 1.0,
           iterations: 5,
-          iterationDuration: Duration(seconds: 1))
+          iterationDuration: Duration(seconds: 1),
+          onStart: () => print("loop5x started"),
+          onComplete: () => print("loop5x completed"),
+          onIterationCompleted: () => print("loop5x iteration complete")),
     ]);
   }
 
