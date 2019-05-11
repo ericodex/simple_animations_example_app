@@ -13,6 +13,8 @@ class _ExperimentState extends State<Experiment>
   AnimationControllerX _controller;
   Animation<double> width;
 
+  bool anyCondition = false;
+
   @override
   void initState() {
     _controller = AnimationControllerX(vsync: this);
@@ -104,6 +106,14 @@ class _ExperimentState extends State<Experiment>
               child: Text("Mirror Fw (5x)"),
             ),
           ],
+        ),
+        Row(
+          children: <Widget>[
+            MaterialButton(
+              onPressed: _conditional,
+              child: Text("Condiational"),
+            ),
+          ],
         )
       ],
     );
@@ -131,13 +141,14 @@ class _ExperimentState extends State<Experiment>
 
   void _restart() {
     _controller.reset();
-    _controller
-        .addTask(FromToAnimationTask(Duration(seconds: 2), from: 0.0, to: 1.0));
+    _controller.addTask(FromToAnimationTask(
+        duration: Duration(seconds: 2), from: 0.0, to: 1.0));
   }
 
   void _continue(bool compensateTime) {
     _controller.reset();
-    _controller.addTask(FromToAnimationTask(Duration(seconds: 2),
+    _controller.addTask(FromToAnimationTask(
+        duration: Duration(seconds: 2),
         to: 1.0,
         recomputeDurationBasedOnProgress: compensateTime,
         onStart: () => print("start forward"),
@@ -146,7 +157,8 @@ class _ExperimentState extends State<Experiment>
 
   void _backwards() {
     _controller.reset([
-      FromToAnimationTask(Duration(seconds: 2),
+      FromToAnimationTask(
+          duration: Duration(seconds: 2),
           to: 0.0,
           onStart: () => print("start backward"),
           onComplete: () => print("fin backward"))
@@ -155,12 +167,12 @@ class _ExperimentState extends State<Experiment>
 
   void _combo1() {
     _controller.reset([
-      SetValueAnimationTask(0.5),
-      SleepAnimationTask(Duration(milliseconds: 500)),
-      FromToAnimationTask(Duration(milliseconds: 1500), to: 1.0),
-      FromToAnimationTask(Duration(milliseconds: 1500), to: 0.5),
-      SleepAnimationTask(Duration(milliseconds: 500)),
-      SetValueAnimationTask(0.0),
+      SetValueAnimationTask(value: 0.5),
+      SleepAnimationTask(duration: Duration(milliseconds: 500)),
+      FromToAnimationTask(duration: Duration(milliseconds: 1500), to: 1.0),
+      FromToAnimationTask(duration: Duration(milliseconds: 1500), to: 0.5),
+      SleepAnimationTask(duration: Duration(milliseconds: 500)),
+      SetValueAnimationTask(value: 0.0),
     ]);
   }
 
@@ -226,6 +238,22 @@ class _ExperimentState extends State<Experiment>
           startWithCurrentPosition: true,
           iterationDuration: Duration(seconds: 1))
     ]);
+  }
+
+  _conditional() {
+    setState(() {
+      anyCondition = false;
+    });
+    _controller.addTasks([
+      FromToAnimationTask(from: 0.0, to: 0.5, duration: Duration(seconds: 1)),
+      ConditionalAnimationTask(
+          predicate: () => anyCondition == true,
+          onStart: () => print("wait for condition"),
+          onComplete: () => print("condition happend")),
+      FromToAnimationTask(to: 1.0, duration: Duration(seconds: 1))
+    ]);
+    Future.delayed(Duration(seconds: 2))
+        .then((_) => setState(() => anyCondition = true));
   }
 }
 

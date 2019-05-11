@@ -1,14 +1,31 @@
 import 'dart:math';
-
 import 'package:meta/meta.dart';
-
-import 'animation_controller_x.dart';
 import 'animation_task.dart';
 
+class ConditionalAnimationTask extends AnimationTask {
+  bool Function() predicate;
+
+  ConditionalAnimationTask({
+    this.predicate,
+    AnimationTaskCallback onStart,
+    AnimationTaskCallback onComplete,
+  }) : super(onStart: onStart, onComplete: onComplete);
+
+  @override
+  computeValue(Duration time) {
+    if (predicate()) {
+      taskCompleted();
+    }
+
+    return startedValue;
+  }
+}
+
 class SleepAnimationTask extends AnimationTask {
-  Duration sleepDuration;
-  SleepAnimationTask(
-    this.sleepDuration, {
+  Duration duration;
+
+  SleepAnimationTask({
+    this.duration,
     AnimationTaskCallback onStart,
     AnimationTaskCallback onComplete,
   }) : super(onStart: onStart, onComplete: onComplete);
@@ -16,7 +33,7 @@ class SleepAnimationTask extends AnimationTask {
   @override
   computeValue(Duration time) {
     final timePassed = time - startedTime;
-    if (timePassed.inMilliseconds >= sleepDuration.inMilliseconds) {
+    if (timePassed.inMilliseconds >= duration.inMilliseconds) {
       taskCompleted();
     }
     return startedValue;
@@ -29,8 +46,8 @@ class FromToAnimationTask extends AnimationTask {
   double from;
   double to;
 
-  FromToAnimationTask(
-    this.duration, {
+  FromToAnimationTask({
+    @required this.duration,
     @required this.to,
     this.recomputeDurationBasedOnProgress = true,
     this.from,
@@ -74,6 +91,7 @@ class LoopAnimationTask extends AnimationTask {
   bool startWithCurrentPosition;
   bool mirrorIterations;
   AnimationTaskCallback onIterationCompleted;
+
   LoopAnimationTask({
     @required this.iterationDuration,
     this.from,
@@ -118,8 +136,8 @@ class LoopAnimationTask extends AnimationTask {
       fromValue = swapValue;
     }
 
-    _currentIterationTask =
-        FromToAnimationTask(iterationDuration, from: fromValue, to: toValue);
+    _currentIterationTask = FromToAnimationTask(
+        duration: iterationDuration, from: fromValue, to: toValue);
     _currentIterationTask.started(time, startedValue);
   }
 
@@ -138,8 +156,9 @@ class LoopAnimationTask extends AnimationTask {
 
 class SetValueAnimationTask extends AnimationTask {
   final double value;
-  SetValueAnimationTask(
-    this.value, {
+
+  SetValueAnimationTask({
+    this.value,
     AnimationTaskCallback onStart,
     AnimationTaskCallback onComplete,
   }) : super(onStart: onStart, onComplete: onComplete);
