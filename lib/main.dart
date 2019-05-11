@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations_example_app/widgets/homescreen.dart';
 
+import 'examples/experimental.dart';
+
 void main() => runApp(SimpleAnimationsExampleApp());
 
 class SimpleAnimationsExampleApp extends StatelessWidget {
@@ -9,7 +11,7 @@ class SimpleAnimationsExampleApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Simple Animations Example App",
-      home: Homescreen(),
+      home: ExperimentalDemo(),
       theme: _theme(),
     );
   }
