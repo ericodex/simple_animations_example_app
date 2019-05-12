@@ -73,7 +73,7 @@ class _MoleState extends State<Mole> {
   }
 
   _hitMole(Duration time) {
-    _moleIsVisible = false;
+    _setMoleVisible(false);
     Iterable.generate(50).forEach((i) => particles.add(MoleParticle(time)));
   }
 
