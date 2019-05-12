@@ -41,11 +41,13 @@ class AnimationControllerX extends Animation<double>
     assert(newValue != null,
         "Value passed from 'computeValue' method must be non null.");
     if (newValue != _value) {
+      _updateStatusOnNewValue(_value, newValue);
       _value = newValue;
       notifyListeners();
     }
 
     if (_currentTask.isCompleted()) {
+      _updateStatusOnTaskComplete();
       _currentTask.dispose();
       _currentTask = null;
     }
@@ -58,7 +60,7 @@ class AnimationControllerX extends Animation<double>
 
   @override
   AnimationStatus get status => _status;
-  AnimationStatus _status = AnimationStatus.forward; // TODO manage status
+  AnimationStatus _status = AnimationStatus.dismissed;
 
   @override
   double get value => _value;
@@ -81,6 +83,30 @@ class AnimationControllerX extends Animation<double>
 
     if (tasksToExecuteAfterReset != null) {
       _tasks.addAll(tasksToExecuteAfterReset);
+    }
+  }
+
+  void _updateStatusOnNewValue(double oldValue, newValue) {
+    if (_status != AnimationStatus.forward && oldValue < newValue) {
+      _status = AnimationStatus.forward;
+      notifyStatusListeners(_status);
+    }
+
+    if (_status != AnimationStatus.reverse && oldValue > newValue) {
+      _status = AnimationStatus.reverse;
+      notifyStatusListeners(_status);
+    }
+  }
+
+  void _updateStatusOnTaskComplete() {
+    if (_status != AnimationStatus.completed && _value == 1.0) {
+      _status = AnimationStatus.completed;
+      notifyStatusListeners(_status);
+    }
+
+    if (_status != AnimationStatus.dismissed && _value == 0.0) {
+      _status = AnimationStatus.dismissed;
+      notifyStatusListeners(_status);
     }
   }
 }

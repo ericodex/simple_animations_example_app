@@ -24,6 +24,10 @@ class _ExperimentState extends State<Experiment>
       setState(() {});
     });
 
+    _controller.addStatusListener((animationStatus) {
+      print("status change: $animationStatus");
+    });
+
     super.initState();
   }
 
