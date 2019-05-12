@@ -6,8 +6,6 @@ import 'animation_task.dart';
 
 // TODO try mixin easy adding to StatefulWidget
 
-// TODO provide legacy interface to be AnimationController compatible
-
 class AnimationControllerX extends Animation<double>
     with
         AnimationEagerListenerMixin,
@@ -76,6 +74,8 @@ class AnimationControllerX extends Animation<double>
   void addTasks(List<AnimationTask> tasks) {
     tasks.forEach((task) => addTask(task));
   }
+
+  List<AnimationTask> get tasks => [..._tasks];
 
   void reset([List<AnimationTask> tasksToExecuteAfterReset]) {
     _tasks.clear();

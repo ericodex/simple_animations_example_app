@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 abstract class AnimationTask {
   Duration startedTime;
   double startedValue;
@@ -24,6 +26,12 @@ abstract class AnimationTask {
   bool isCompleted() => _isCompleted;
 
   void dispose() {}
+
+  @mustCallSuper
+  @override
+  String toString() {
+    return "(startedTime: $startedTime, startedValue: $startedValue)";
+  }
 }
 
 typedef AnimationTaskCallback = Function();

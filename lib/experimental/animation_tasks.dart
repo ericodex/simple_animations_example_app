@@ -22,7 +22,7 @@ class ConditionalAnimationTask extends AnimationTask {
 
   @override
   String toString() {
-    return "ConditionalAnimationTask";
+    return "ConditionalAnimationTask()${super.toString()}";
   }
 }
 
@@ -46,7 +46,7 @@ class SleepAnimationTask extends AnimationTask {
 
   @override
   String toString() {
-    return "SleepAnimationTask(duration: $duration)";
+    return "SleepAnimationTask(duration: $duration)${super.toString()}";
   }
 }
 
@@ -94,7 +94,7 @@ class FromToAnimationTask extends AnimationTask {
 
   @override
   String toString() {
-    return "FromToAnimationTask(from: $from, to: $to, duration: $duration)";
+    return "FromToAnimationTask(from: $from, to: $to, duration: $duration)${super.toString()}";
   }
 }
 
@@ -170,7 +170,7 @@ class LoopAnimationTask extends AnimationTask {
 
   @override
   String toString() {
-    return "LoopAnimationTask(from: $from, to: $to, iterationDuration: $iterationDuration, iterations: $iterations, mirror: $mirrorIterations)";
+    return "LoopAnimationTask(from: $from, to: $to, iterationDuration: $iterationDuration, iterations: $iterations, mirror: $mirrorIterations)${super.toString()}";
   }
 }
 
@@ -191,6 +191,6 @@ class SetValueAnimationTask extends AnimationTask {
 
   @override
   String toString() {
-    return "SetValueAnimationTask(value: $value)";
+    return "SetValueAnimationTask(value: $value)${super.toString()}";
   }
 }
