@@ -8,16 +8,13 @@ import 'animation_task.dart';
 
 // TODO provide legacy interface to be AnimationController compatible
 
-// TODO added generic status listener
-
 class AnimationControllerX extends Animation<double>
     with
         AnimationEagerListenerMixin,
         AnimationLocalListenersMixin,
         AnimationLocalStatusListenersMixin {
   Ticker _ticker;
-  Function(AnimationControllerXStatus status, AnimationTask task)
-      onStatusChange;
+  StatusChangeCallback onStatusChange;
 
   AnimationTask _currentTask;
   List<AnimationTask> _tasks = [];
@@ -118,3 +115,6 @@ class AnimationControllerX extends Animation<double>
 }
 
 enum AnimationControllerXStatus { startTask, completeTask }
+
+typedef StatusChangeCallback = Function(
+    AnimationControllerXStatus status, AnimationTask task);
