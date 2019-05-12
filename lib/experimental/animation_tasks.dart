@@ -19,6 +19,11 @@ class ConditionalAnimationTask extends AnimationTask {
 
     return startedValue;
   }
+
+  @override
+  String toString() {
+    return "ConditionalAnimationTask";
+  }
 }
 
 class SleepAnimationTask extends AnimationTask {
@@ -37,6 +42,11 @@ class SleepAnimationTask extends AnimationTask {
       taskCompleted();
     }
     return startedValue;
+  }
+
+  @override
+  String toString() {
+    return "SleepAnimationTask(duration: $duration)";
   }
 }
 
@@ -80,6 +90,11 @@ class FromToAnimationTask extends AnimationTask {
     if (value == toValue) taskCompleted();
 
     return value;
+  }
+
+  @override
+  String toString() {
+    return "FromToAnimationTask(from: $from, to: $to, duration: $duration)";
   }
 }
 
@@ -152,6 +167,11 @@ class LoopAnimationTask extends AnimationTask {
       taskCompleted();
     }
   }
+
+  @override
+  String toString() {
+    return "LoopAnimationTask(from: $from, to: $to, iterationDuration: $iterationDuration, iterations: $iterations, mirror: $mirrorIterations)";
+  }
 }
 
 class SetValueAnimationTask extends AnimationTask {
@@ -167,5 +187,10 @@ class SetValueAnimationTask extends AnimationTask {
   computeValue(Duration time) {
     taskCompleted();
     return value;
+  }
+
+  @override
+  String toString() {
+    return "SetValueAnimationTask(value: $value)";
   }
 }

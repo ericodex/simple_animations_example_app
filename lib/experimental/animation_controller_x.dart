@@ -16,11 +16,13 @@ class AnimationControllerX extends Animation<double>
         AnimationLocalListenersMixin,
         AnimationLocalStatusListenersMixin {
   Ticker _ticker;
+  Function(AnimationControllerXStatus status, AnimationTask task)
+      onStatusChange;
 
   AnimationTask _currentTask;
   List<AnimationTask> _tasks = [];
 
-  AnimationControllerX({@required TickerProvider vsync})
+  AnimationControllerX({@required TickerProvider vsync, this.onStatusChange})
       : assert(vsync != null,
             "Please specify a TickerProvider. You can use the SingleTickerProviderStateMixin to get one.") {
     _ticker = vsync.createTicker(_tick);
@@ -35,6 +37,8 @@ class AnimationControllerX extends Animation<double>
     if (_currentTask == null) {
       _currentTask = _tasks.removeAt(0);
       _currentTask.started(time, _value);
+      if (onStatusChange != null)
+        onStatusChange(AnimationControllerXStatus.startTask, _currentTask);
     }
 
     final newValue = _currentTask.computeValue(time);
@@ -48,6 +52,8 @@ class AnimationControllerX extends Animation<double>
 
     if (_currentTask.isCompleted()) {
       _updateStatusOnTaskComplete();
+      if (onStatusChange != null)
+        onStatusChange(AnimationControllerXStatus.completeTask, _currentTask);
       _currentTask.dispose();
       _currentTask = null;
     }
@@ -110,3 +116,5 @@ class AnimationControllerX extends Animation<double>
     }
   }
 }
+
+enum AnimationControllerXStatus { startTask, completeTask }

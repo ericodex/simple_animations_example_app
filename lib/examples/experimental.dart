@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_animations_example_app/experimental/animation_controller_x.dart';
+import 'package:simple_animations_example_app/experimental/animation_task.dart';
 import 'package:simple_animations_example_app/experimental/animation_tasks.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
@@ -17,7 +18,8 @@ class _ExperimentState extends State<Experiment>
 
   @override
   void initState() {
-    _controller = AnimationControllerX(vsync: this);
+    _controller =
+        AnimationControllerX(vsync: this, onStatusChange: _onStatusChange);
     width = Tween(begin: 0.0, end: 1.0).animate(_controller);
 
     _controller.addListener(() {
@@ -258,6 +260,10 @@ class _ExperimentState extends State<Experiment>
     ]);
     Future.delayed(Duration(seconds: 2))
         .then((_) => setState(() => anyCondition = true));
+  }
+
+  _onStatusChange(AnimationControllerXStatus status, AnimationTask task) {
+    print("X status change: $status => $task");
   }
 }
 
