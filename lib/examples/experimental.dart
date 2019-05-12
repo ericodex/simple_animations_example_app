@@ -119,6 +119,10 @@ class _ExperimentState extends State<Experiment>
               onPressed: _conditional,
               child: Text("Condiational"),
             ),
+            MaterialButton(
+              onPressed: () => _controller.forceCompleteCurrentTask(),
+              child: Text("Force complete"),
+            ),
           ],
         )
       ],
@@ -142,7 +146,7 @@ class _ExperimentState extends State<Experiment>
   }
 
   void _stop() {
-    _controller.reset();
+    _controller.stop();
   }
 
   void _restart() {

@@ -77,6 +77,14 @@ class AnimationControllerX extends Animation<double>
 
   List<AnimationTask> get tasks => [..._tasks];
 
+  void stop() {
+    reset();
+  }
+
+  void forceCompleteCurrentTask() {
+    if (_currentTask != null) _currentTask.taskCompleted();
+  }
+
   void reset([List<AnimationTask> tasksToExecuteAfterReset]) {
     _tasks.clear();
     if (_currentTask != null) {
