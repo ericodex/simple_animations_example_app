@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations_example_app/experimental/animation_controller_x.dart';
-import 'package:simple_animations_example_app/experimental/animation_task.dart';
-import 'package:simple_animations_example_app/experimental/animation_tasks.dart';
+import 'package:simple_animations/simple_animations.dart';
 import 'package:simple_animations_example_app/widgets/example_page.dart';
 
 class Experiment extends StatefulWidget {
@@ -79,6 +77,32 @@ class _ExperimentState extends State<Experiment>
               onPressed: _combo1,
               child: Text("Combo 1"),
             ),
+            MaterialButton(
+              onPressed: () {
+                _controller.reset([
+                  SetValueTask(value: 0.3),
+                  LoopTask(
+                      duration: Duration(seconds: 1),
+                      from: 1.0,
+                      to: 0.0,
+                      onIterationCompleted: () => "L1 ITERATION COMPLETE")
+                ]);
+                Future.delayed(Duration(milliseconds: 150)).then((_) {
+                  _controller.reset([
+                    LoopTask(
+                        duration: Duration(seconds: 1),
+                        from: 1.0,
+                        to: 0.0,
+                        onIterationCompleted: () => "L1 ITERATION COMPLETE")
+                  ]);
+                });
+                Future.delayed(Duration(milliseconds: 1400)).then((_) {
+                  print("STOP");
+                  _controller.stop();
+                });
+              },
+              child: Text("Test 1"),
+            ),
           ],
         ),
         Row(
@@ -151,13 +175,13 @@ class _ExperimentState extends State<Experiment>
 
   void _restart() {
     _controller.reset();
-    _controller.addTask(FromToAnimationTask(
-        duration: Duration(seconds: 2), from: 0.0, to: 1.0));
+    _controller.addTask(
+        FromToTask(duration: Duration(seconds: 2), from: 0.0, to: 1.0));
   }
 
   void _continue(bool compensateTime) {
     _controller.reset();
-    _controller.addTask(FromToAnimationTask(
+    _controller.addTask(FromToTask(
         duration: Duration(seconds: 2),
         to: 1.0,
         recomputeDurationBasedOnProgress: compensateTime,
@@ -167,7 +191,7 @@ class _ExperimentState extends State<Experiment>
 
   void _backwards() {
     _controller.reset([
-      FromToAnimationTask(
+      FromToTask(
           duration: Duration(seconds: 2),
           to: 0.0,
           onStart: () => print("start backward"),
@@ -177,39 +201,43 @@ class _ExperimentState extends State<Experiment>
 
   void _combo1() {
     _controller.reset([
-      SetValueAnimationTask(value: 0.5),
-      SleepAnimationTask(duration: Duration(milliseconds: 500)),
-      FromToAnimationTask(duration: Duration(milliseconds: 1500), to: 1.0),
-      FromToAnimationTask(duration: Duration(milliseconds: 1500), to: 0.5),
-      SleepAnimationTask(duration: Duration(milliseconds: 500)),
-      SetValueAnimationTask(value: 0.0),
+      SetValueTask(value: 0.5),
+      SleepTask(duration: Duration(milliseconds: 500)),
+      FromToTask(duration: Duration(milliseconds: 1500), to: 1.0),
+      FromToTask(duration: Duration(milliseconds: 1500), to: 0.5),
+      SleepTask(duration: Duration(milliseconds: 500)),
+      SetValueTask(value: 0.0),
     ]);
   }
 
   void _loopFw() {
     _controller.reset([
-      LoopAnimationTask(
+      LoopTask(
           from: 0.0,
           to: 1.0,
-          startWithCurrentPosition: false,
-          iterationDuration: Duration(seconds: 1))
+          startOnCurrentPosition: false,
+          duration: Duration(seconds: 1))
     ]);
   }
 
   void _loopRv() {
+    print("LOOP RV PRESSED");
     _controller.reset([
-      LoopAnimationTask(
-          from: 1.0, to: 0.0, iterationDuration: Duration(seconds: 1))
+      LoopTask(
+          from: 1.0,
+          to: 0.0,
+          duration: Duration(seconds: 1),
+          onIterationCompleted: () => print("ITERATION COMPLETE"))
     ]);
   }
 
   void _loopFw5x() {
     _controller.reset([
-      LoopAnimationTask(
+      LoopTask(
           from: 0.0,
           to: 1.0,
           iterations: 5,
-          iterationDuration: Duration(seconds: 1),
+          duration: Duration(seconds: 1),
           onStart: () => print("loop5x started"),
           onComplete: () => print("loop5x completed"),
           onIterationCompleted: () => print("loop5x iteration complete")),
@@ -218,35 +246,35 @@ class _ExperimentState extends State<Experiment>
 
   void _mirrorFw() {
     _controller.reset([
-      LoopAnimationTask(
+      LoopTask(
           from: 0.0,
           to: 1.0,
-          mirrorIterations: true,
-          startWithCurrentPosition: true,
-          iterationDuration: Duration(seconds: 1))
+          mirror: true,
+          startOnCurrentPosition: true,
+          duration: Duration(seconds: 1))
     ]);
   }
 
   void _mirrorRv() {
     _controller.reset([
-      LoopAnimationTask(
+      LoopTask(
           from: 1.0,
           to: 0.0,
-          mirrorIterations: true,
-          startWithCurrentPosition: true,
-          iterationDuration: Duration(seconds: 1))
+          mirror: true,
+          startOnCurrentPosition: true,
+          duration: Duration(seconds: 1))
     ]);
   }
 
   void _mirrorFw5x() {
     _controller.reset([
-      LoopAnimationTask(
+      LoopTask(
           from: 0.0,
           to: 1.0,
-          mirrorIterations: true,
+          mirror: true,
           iterations: 5,
-          startWithCurrentPosition: true,
-          iterationDuration: Duration(seconds: 1))
+          startOnCurrentPosition: true,
+          duration: Duration(seconds: 1))
     ]);
   }
 
@@ -255,12 +283,12 @@ class _ExperimentState extends State<Experiment>
       anyCondition = false;
     });
     _controller.addTasks([
-      FromToAnimationTask(from: 0.0, to: 0.5, duration: Duration(seconds: 1)),
-      ConditionalAnimationTask(
+      FromToTask(from: 0.0, to: 0.5, duration: Duration(seconds: 1)),
+      ConditionalTask(
           predicate: () => anyCondition == true,
           onStart: () => print("wait for condition"),
           onComplete: () => print("condition happend")),
-      FromToAnimationTask(to: 1.0, duration: Duration(seconds: 1))
+      FromToTask(to: 1.0, duration: Duration(seconds: 1))
     ]);
     Future.delayed(Duration(seconds: 2))
         .then((_) => setState(() => anyCondition = true));
