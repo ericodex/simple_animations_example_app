@@ -184,7 +184,7 @@ class _ExperimentState extends State<Experiment>
     _controller.addTask(FromToTask(
         duration: Duration(seconds: 2),
         to: 1.0,
-        recomputeDurationBasedOnProgress: compensateTime,
+        durationBasedOnZeroToOneInterval: compensateTime,
         onStart: () => print("start forward"),
         onComplete: () => print("fin forward")));
   }
