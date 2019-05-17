@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'examples/experimental.dart';
+import 'examples/experimental_mixin.dart';
 
 void main() => runApp(SimpleAnimationsExampleApp());
 
