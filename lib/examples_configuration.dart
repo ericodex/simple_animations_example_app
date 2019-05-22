@@ -8,6 +8,8 @@ import 'package:simple_animations_example_app/examples/switchlike_checkbox.dart'
 import 'package:simple_animations_example_app/examples/typewriter_box.dart';
 import 'package:simple_animations_example_app/examples/load_stuff_button.dart';
 
+import 'examples/acx_progress_indicator.dart';
+
 ExamplesConfiguration getExamplesConfiguration() {
   final configuration = ExamplesConfiguration();
 
@@ -29,6 +31,9 @@ ExamplesConfiguration getExamplesConfiguration() {
       builder: (context) => ParticleBackgroundDemo()));
   configuration.add(
       ExampleItem(name: "Hit a mole", builder: (context) => HitAMoleDemo()));
+  configuration.add(ExampleItem(
+      name: "Progress Indicator",
+      builder: (context) => AcxProgressIndicatorDemo()));
 
   return configuration;
 }
