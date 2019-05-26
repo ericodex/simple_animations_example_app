@@ -36,7 +36,7 @@ class _ProgressIndicatorAnimationState extends State<ProgressIndicatorAnimation>
 
   var _showCircularProgressIndicator = false;
 
-  Padding _progressIndicator() {
+  Widget _progressIndicator() {
     return Padding(
       padding: const EdgeInsets.only(top: 50),
       child: Transform.translate(
@@ -59,7 +59,7 @@ class _ProgressIndicatorAnimationState extends State<ProgressIndicatorAnimation>
     );
   }
 
-  Padding _requestButton() {
+  Widget _requestButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 100),
       child: Row(
