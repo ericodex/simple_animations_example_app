@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:simple_animations_example_app/examples/bar_chart.dart';
 import 'package:simple_animations_example_app/examples/fade_in_ui.dart';
 import 'package:simple_animations_example_app/examples/fancy_background.dart';
 import 'package:simple_animations_example_app/examples/hit_a_mole.dart';
@@ -34,6 +35,8 @@ ExamplesConfiguration getExamplesConfiguration() {
   configuration.add(ExampleItem(
       name: "Progress Indicator",
       builder: (context) => AcxProgressIndicatorDemo()));
+  configuration.add(
+      ExampleItem(name: "Bar chart", builder: (context) => BarChartDemo()));
 
   return configuration;
 }
